@@ -11,15 +11,15 @@ import { FluxUiTreeStateApi } from "./FluxUiTreeStateApi.js";
 const treeStateApi = await FluxUiTreeStateApi.new({
   publish: (subscriberId, oldState, newState) => {
     // Send state change notification
-    console.log(`State for topic ${topic} changed: ${JSON.stringify(oldState)} -> ${JSON.stringify(newState)}`);
+    console.log(`State for topic ${subscriberId} changed: ${JSON.stringify(oldState)} -> ${JSON.stringify(newState)}`);
   },
   subscribe: (subscriberId, id, callback) => {
     // Subscribe to state change notifications
-    console.log(`Subscribed to state changes for topic ${topic} with ID ${id}`);
+    console.log(`Subscribed to state changes for topic ${subscriberId} with ID ${id}`);
   },
   unsubscribe: (subscriberId, id) => {
     // Unsubscribe from state change notifications
-    console.log(`Unsubscribed from state changes for topic ${topic} with ID ${id}`);
+    console.log(`Unsubscribed from state changes for topic ${subscriberId} with ID ${id}`);
   }
 });
 
