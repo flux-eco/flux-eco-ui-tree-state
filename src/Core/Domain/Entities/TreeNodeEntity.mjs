@@ -1,7 +1,7 @@
 import {NodeNestedSet} from "../ValueObjects/NodeNestedSet.mjs";
 import {NodeState} from "../ValueObjects/NodeState.mjs";
 
-export class FluxUiTreeNodeEntity {
+export class TreeNodeEntity {
     /**
      * @var {NodeNestedSet}
      */
@@ -21,14 +21,14 @@ export class FluxUiTreeNodeEntity {
     /**
      * @param {NodeNestedSet} nodeNestedSet
      * @param {NodeState} nodeState
-     * @return {FluxUiTreeNodeEntity}
+     * @return {TreeNodeEntity}
      */
     static new(nodeNestedSet, nodeState) {
-        return new FluxUiTreeNodeEntity(nodeNestedSet, nodeState);
+        return new TreeNodeEntity(nodeNestedSet, nodeState);
     }
 
     /**
-     * @param {FluxUiTreeNodeEntity} node
+     * @param {TreeNodeEntity} node
      */
     addChild(node) {
         this.children.set(node.nodeNestedSet.id, node);
@@ -36,7 +36,7 @@ export class FluxUiTreeNodeEntity {
     }
 
     /**
-     * @param {FluxUiTreeNodeEntity} parent
+     * @param {TreeNodeEntity} parent
      */
     setParent(parent) {
         this.parent = parent;

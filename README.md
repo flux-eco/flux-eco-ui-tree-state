@@ -46,10 +46,10 @@ The FluxUiTreeState API is responsible for creating and managing the state of tr
 # Usage
 
 ``` javascript
-import { FluxUiTreeStateApi } from "./FluxUiTreeStateApi.js";
+import { FluxEcoUiTreeStateApi } from "./FluxEcoUiTreeStateApi.js";
 
 // Initialize the API
-const treeStateApi = await FluxUiTreeStateApi.new({
+const treeStateApi = await FluxEcoUiTreeStateApi.new({
   publish: (subscriberId, oldState, newState) => {
     // Send state change notification
     console.log(`Notify ${subscriberId} about tree changes: ${JSON.stringify(oldState)} -> ${JSON.stringify(newState)}`);

@@ -1,4 +1,4 @@
-export class FluxUiTreeStateEventsRecorder {
+export class TreeStateEventsRecorder {
     /**
      * @type {array}
      */
@@ -8,7 +8,7 @@ export class FluxUiTreeStateEventsRecorder {
     }
 
     static new() {
-        return new FluxUiTreeStateEventsRecorder();
+        return new TreeStateEventsRecorder();
     }
 
     recordEvent(event) {

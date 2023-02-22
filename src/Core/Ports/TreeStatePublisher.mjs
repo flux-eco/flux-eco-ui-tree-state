@@ -1,4 +1,4 @@
-export class FluxUiTreeStatePublisher {
+export class TreeStatePublisher {
     #statePublisher;
 
     constructor(statePublisher) {
@@ -6,12 +6,12 @@ export class FluxUiTreeStatePublisher {
     }
 
     /**
-     * @return {Promise<FluxUiTreeStatePublisher>}
+     * @return {Promise<TreeStatePublisher>}
      */
     static async new(
         statePublisher
     ) {
-        return new FluxUiTreeStatePublisher(statePublisher)
+        return new TreeStatePublisher(statePublisher)
     }
 
     /**

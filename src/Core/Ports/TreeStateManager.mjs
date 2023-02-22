@@ -1,4 +1,4 @@
-export class FluxUiTreeStateManager {
+export class TreeStateManager {
     #stateManager;
 
     constructor(stateManager) {
@@ -6,12 +6,12 @@ export class FluxUiTreeStateManager {
     }
 
     /**
-     * @return {Promise<FluxUiTreeStateManager>}
+     * @return {Promise<TreeStateManager>}
      */
     static async new(
         stateManager
     ) {
-        return new FluxUiTreeStateManager(stateManager)
+        return new TreeStateManager(stateManager)
     }
 
     /**

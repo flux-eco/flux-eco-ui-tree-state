@@ -1,6 +1,6 @@
-import {FluxUiTreeStatePublisher} from "../../Core/Ports/FluxUiTreeStatePublisher.mjs";
+import {TreeStatePublisher} from "../../Core/Ports/TreeStatePublisher.mjs";
 
-export class FluxUiTreeStateManagerAdapter {
+export class FluxEcoUiTreeStateManagerAdapter {
     /**
      * @var {FluxUiTreeStatePublisher}
      */
@@ -12,13 +12,13 @@ export class FluxUiTreeStateManagerAdapter {
     }
 
     /**
-     * @param {FluxUiTreeStatePublisher} fluxUiTreeStatePublisher
-     * @return {Promise<FluxUiTreeStateManagerAdapter>}
+     * @param {TreeStatePublisher} fluxUiTreeStatePublisher
+     * @return {Promise<FluxEcoUiTreeStateManagerAdapter>}
      */
     static async new(
         fluxUiTreeStatePublisher
     ) {
-        return new FluxUiTreeStateManagerAdapter(fluxUiTreeStatePublisher)
+        return new FluxEcoUiTreeStateManagerAdapter(fluxUiTreeStatePublisher)
     }
 
     async setState(idPath, newState) {

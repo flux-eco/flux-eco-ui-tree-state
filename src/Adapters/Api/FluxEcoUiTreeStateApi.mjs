@@ -1,7 +1,7 @@
-import {FluxUiTreeStateService} from "../../Core/Ports/FluxUiTreeStateService.mjs";
-import {FluxUiTreeStateManager} from "../../Core/Ports/FluxUiTreeStateManager.mjs";
-import {FluxUiTreeStateManagerAdapter} from "../State/FluxUiTreeStateManagerAdapter.mjs";
-import {FluxUiTreeStatePublisher} from "../../Core/Ports/FluxUiTreeStatePublisher.mjs";
+import {TreeStateService} from "../../Core/Ports/TreeStateService.mjs";
+import {TreeStateManager} from "../../Core/Ports/TreeStateManager.mjs";
+import {FluxEcoUiTreeStateManagerAdapter} from "../State/FluxEcoUiTreeStateManagerAdapter.mjs";
+import {TreeStatePublisher} from "../../Core/Ports/TreeStatePublisher.mjs";
 
 /**
  * @typedef {Object} FluxUiTreeStatePublisherAdapter
@@ -13,9 +13,9 @@ import {FluxUiTreeStatePublisher} from "../../Core/Ports/FluxUiTreeStatePublishe
 /**
  * Creates and manages states of tree data
  *
- * @type FluxUiTreeStateApi
+ * @type FluxEcoUiTreeStateApi
  */
-export class FluxUiTreeStateApi {
+export class FluxEcoUiTreeStateApi {
     name = "flux-eco-ui-tree-state";
     /**
      * @var {FluxUiTreeStateService} #service
@@ -24,7 +24,7 @@ export class FluxUiTreeStateApi {
 
     /**
      * @private
-     * @param {FluxUiTreeStateService} service
+     * @param {TreeStateService} service
      */
     constructor(service) {
         this.#service = service;
@@ -32,11 +32,11 @@ export class FluxUiTreeStateApi {
 
     /**
      * @property {FluxUiTreeStatePublisherAdapter} fluxUiTreeStatePublisherAdapter
-     * @return {Promise<FluxUiTreeStateApi>}
+     * @return {Promise<FluxEcoUiTreeStateApi>}
      */
     static async new(fluxUiTreeStatePublisherAdapter) {
-        const fluxUiTreeStatePublisher = await FluxUiTreeStatePublisher.new(fluxUiTreeStatePublisherAdapter);
-        return new FluxUiTreeStateApi(await FluxUiTreeStateService.new(fluxUiTreeStatePublisher, await FluxUiTreeStateManager.new(await FluxUiTreeStateManagerAdapter.new(fluxUiTreeStatePublisher))));
+        const fluxUiTreeStatePublisher = await TreeStatePublisher.new(fluxUiTreeStatePublisherAdapter);
+        return new FluxEcoUiTreeStateApi(await TreeStateService.new(fluxUiTreeStatePublisher, await TreeStateManager.new(await FluxEcoUiTreeStateManagerAdapter.new(fluxUiTreeStatePublisher))));
     }
 
     /**

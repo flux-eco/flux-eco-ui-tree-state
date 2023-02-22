@@ -2,13 +2,13 @@ import {TreeCreatedEvent} from "./Events/TreeCreatedEvent.mjs";
 import {NodeNestedSet} from "./ValueObjects/NodeNestedSet.mjs";
 import {NodeState} from "./ValueObjects/NodeState.mjs";
 import {Id} from "./ValueObjects/Id.mjs";
-import {FluxUiTreeNodeEntity} from "./Entities/FluxUiTreeNodeEntity.mjs";
+import {TreeNodeEntity} from "./Entities/TreeNodeEntity.mjs";
 import {TreeState} from "./ValueObjects/TreeState.mjs";
 import {NodeAppendedEvent} from "./Events/NodeAppendedEvent.mjs";
 import {NodeStateStatus} from "./ValueObjects/NodeStateStatus.mjs";
 import {NodeChangedEvent} from "./Events/NodeChangedEvent.mjs";
 
-export class FluxUiTreeStateAggregate {
+export class TreeStateAggregate {
     /**
      * {EventRecorder}
      */
@@ -28,7 +28,7 @@ export class FluxUiTreeStateAggregate {
         this.nodeDataSchema = nodeDataSchema;
 
         const rootNestedSet = NodeNestedSet.new(rootNode.id.value, 1, 2);
-        this.rootNodeEntity = FluxUiTreeNodeEntity.new(rootNestedSet, rootNode);
+        this.rootNodeEntity = TreeNodeEntity.new(rootNestedSet, rootNode);
 
         this.nodeEntityMap = new Map();
         this.deletedNodes = new Set();
@@ -39,26 +39,26 @@ export class FluxUiTreeStateAggregate {
     }
 
     /**
-     * @param {FluxUiTreeStateEventsRecorder} eventRecorder
+     * @param {TreeStateEventsRecorder} eventRecorder
      * @param {string} id
      * @param {object} nodeDataSchema
-     * @return {FluxUiTreeStateAggregate}
+     * @return {TreeStateAggregate}
      */
     static create(eventRecorder, id, nodeDataSchema) {
         const treeId = Id.newTreeId(id);
         const nodeId = Id.newRootNodeId();
 
-        const obj = new FluxUiTreeStateAggregate(eventRecorder, treeId, nodeDataSchema, NodeState.newRootNode(treeId, nodeId))
+        const obj = new TreeStateAggregate(eventRecorder, treeId, nodeDataSchema, NodeState.newRootNode(treeId, nodeId))
         obj.#eventRecorder.recordEvent(TreeCreatedEvent.new(obj.getState()))
 
         return obj;
     }
 
     /**
-     * @param {FluxUiTreeStateEventsRecorder} eventRecorder
+     * @param {TreeStateEventsRecorder} eventRecorder
      * @param {TreeState} treeState
      * @param treeState
-     * @return {FluxUiTreeStateAggregate}
+     * @return {TreeStateAggregate}
      */
     static async fromState(eventRecorder, treeState) {
         const id = treeState.id;
@@ -67,7 +67,7 @@ export class FluxUiTreeStateAggregate {
 
         const nodeStates = treeState.nodes;
 
-        const aggregate = new FluxUiTreeStateAggregate(eventRecorder, id, nodeDataSchema, rootNode)
+        const aggregate = new TreeStateAggregate(eventRecorder, id, nodeDataSchema, rootNode)
 
         for (const [nodeId, nodeState] of Object.entries(nodeStates)) {
             if (!nodeState) {
@@ -92,7 +92,7 @@ export class FluxUiTreeStateAggregate {
      * @param {string} nodeId
      * @param {object} nodeData
      * @param {boolean} expanded
-     * @return {FluxUiTreeStateAggregate}
+     * @return {TreeStateAggregate}
      */
     async appendNodeToRoot(nodeId, nodeData, expanded) {
         const rootNodeId = Id.newRootNodeId();
@@ -108,7 +108,7 @@ export class FluxUiTreeStateAggregate {
      * @param {string} nodeId
      * @param {object} nodeData
      * @param {boolean} expanded
-     * @return {FluxUiTreeStateAggregate}
+     * @return {TreeStateAggregate}
      */
     async appendNodeToParentNode(parentNodeId, nodeId, nodeData, expanded) {
         const parentNodeEntity = this.nodeEntityMap.get(parentNodeId);
@@ -132,7 +132,7 @@ export class FluxUiTreeStateAggregate {
         }
         const left = parentNodeEntity.nodeNestedSet.right;
         const right = left + 1;
-        const nodeEntity = FluxUiTreeNodeEntity.new(NodeNestedSet.new(nodeState.id.value, left, right), nodeState);
+        const nodeEntity = TreeNodeEntity.new(NodeNestedSet.new(nodeState.id.value, left, right), nodeState);
         parentNodeEntity.addChild(nodeEntity);
 
         await this.nodeEntityMap.set(nodeState.id.value, nodeEntity);

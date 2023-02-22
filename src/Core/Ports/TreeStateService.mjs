@@ -1,10 +1,10 @@
-import {FluxUiTreeStateEventsRecorder} from "../Domain/FluxUiTreeStateEventsRecorder.mjs";
-import {FluxUiTreeStateAggregate} from "../Domain/FluxUiTreeStateAggregate.mjs";
+import {TreeStateEventsRecorder} from "../Domain/TreeStateEventsRecorder.mjs";
+import {TreeStateAggregate} from "../Domain/TreeStateAggregate.mjs";
 import {Id} from "../Domain/ValueObjects/Id.mjs";
-import {FluxUiTreeStateManager} from "./FluxUiTreeStateManager.mjs";
-import {FluxUiTreeStatePublisher} from "./FluxUiTreeStatePublisher.mjs";
+import {TreeStateManager} from "./TreeStateManager.mjs";
+import {TreeStatePublisher} from "./TreeStatePublisher.mjs";
 
-export class FluxUiTreeStateService {
+export class TreeStateService {
     /**
      * @var {FluxUiTreeStatePublisher}
      */
@@ -23,15 +23,15 @@ export class FluxUiTreeStateService {
     }
 
     /**
-     * @param {FluxUiTreeStatePublisher} fluxUiTreeStatePublisher
-     * @param {FluxUiTreeStateManager} fluxUiTreeDataStateManager
-     * @return {Promise<FluxUiTreeStateService>}
+     * @param {TreeStatePublisher} fluxUiTreeStatePublisher
+     * @param {TreeStateManager} fluxUiTreeDataStateManager
+     * @return {Promise<TreeStateService>}
      */
     static async new(
         fluxUiTreeStatePublisher,
         fluxUiTreeDataStateManager
     ) {
-        return new FluxUiTreeStateService(fluxUiTreeStatePublisher, fluxUiTreeDataStateManager)
+        return new TreeStateService(fluxUiTreeStatePublisher, fluxUiTreeDataStateManager)
     }
 
     /**
@@ -40,8 +40,8 @@ export class FluxUiTreeStateService {
      * @return {Promise<void>}
      */
     async createTree(treeId, nodeDataSchema) {
-        const eventRecorder = FluxUiTreeStateEventsRecorder.new();
-        const aggregate = FluxUiTreeStateAggregate.create(eventRecorder, treeId, nodeDataSchema);
+        const eventRecorder = TreeStateEventsRecorder.new();
+        const aggregate = TreeStateAggregate.create(eventRecorder, treeId, nodeDataSchema);
 
         const recordedEvents = eventRecorder.getRecordedEvents();
         if (recordedEvents.length > 0) {
@@ -57,9 +57,9 @@ export class FluxUiTreeStateService {
      * @return {Promise<void>}
      */
     async appendNodeToRoot(treeId, nodeId, nodeData, expanded) {
-        const eventRecorder = FluxUiTreeStateEventsRecorder.new();
+        const eventRecorder = TreeStateEventsRecorder.new();
         const treeState = await this.#fluxUiTreeStateManager.getState(Id.newTreeId(treeId).path);
-        const aggregate = await FluxUiTreeStateAggregate.fromState(eventRecorder, treeState);
+        const aggregate = await TreeStateAggregate.fromState(eventRecorder, treeState);
 
         await aggregate.appendNodeToRoot(nodeId, nodeData, expanded);
         const recordedEvents = eventRecorder.getRecordedEvents();
@@ -77,10 +77,10 @@ export class FluxUiTreeStateService {
      * @return {Promise<void>}
      */
     async appendNodeToParentNode(treeId, parentNodeId, nodeId, nodeData, expanded = false) {
-        const eventRecorder = FluxUiTreeStateEventsRecorder.new();
+        const eventRecorder = TreeStateEventsRecorder.new();
 
         const treeState = await this.#fluxUiTreeStateManager.getState(Id.newTreeId(treeId).path);
-        const aggregate = await FluxUiTreeStateAggregate.fromState(eventRecorder, treeState);
+        const aggregate = await TreeStateAggregate.fromState(eventRecorder, treeState);
 
         await aggregate.appendNodeToParentNode(parentNodeId, nodeId, nodeData, expanded)
         const recordedEvents = eventRecorder.getRecordedEvents();
@@ -95,9 +95,9 @@ export class FluxUiTreeStateService {
      * @return {Promise<void>}
      */
     async toggleNodeStatusExpanded(treeId, nodeId) {
-        const eventRecorder = FluxUiTreeStateEventsRecorder.new();
+        const eventRecorder = TreeStateEventsRecorder.new();
         const treeState = await this.#fluxUiTreeStateManager.getState(Id.newTreeId(treeId).path);
-        const aggregate = await FluxUiTreeStateAggregate.fromState(eventRecorder, treeState);
+        const aggregate = await TreeStateAggregate.fromState(eventRecorder, treeState);
         await aggregate.toggleNodeStatusExpanded(nodeId);
         const recordedEvents = eventRecorder.getRecordedEvents();
         if (recordedEvents.length > 0) {
