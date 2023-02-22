@@ -7,7 +7,6 @@ import {NodeStateStatus} from "./NodeStateStatus.mjs";
  * @property {Id} id - The id as ID object of the node.
  * @property {NodeStateStatus} status - The status of the node, e.g. whether it is expanded or deleted.
  * @property {null|Object} data - The data of the node, conforming to the schema declared at tree level - null in case of rootNodeEntity
- * @property {Object.<string, Object>} apiActionPayloads - The actions with payload that can be performed on the api.
  * @property {NodeState[]} children - array of child nodeEntityMap
  */
 export class NodeState {
@@ -29,12 +28,6 @@ export class NodeState {
             id,
             status: NodeStateStatus.new(true),
             data: null,
-            apiActionPayloads: {
-                toggleNodeStatusExpanded: {
-                    treeId: treeId.value,
-                    nodeId: id.value
-                }
-            },
             children: [],
         };
     }
@@ -61,12 +54,6 @@ export class NodeState {
             id,
             status,
             data,
-            apiActionPayloads: {
-                toggleNodeStatusExpanded: {
-                    treeId: treeId.value,
-                    nodeId: id.value
-                }
-            },
             children: []
         };
     }
