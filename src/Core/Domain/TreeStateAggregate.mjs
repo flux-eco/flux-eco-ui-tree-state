@@ -111,6 +111,7 @@ export class TreeStateAggregate {
      * @return {TreeStateAggregate}
      */
     async appendNodeToParentNode(parentNodeId, nodeId, nodeData, expanded) {
+      try {
         const parentNodeEntity = this.nodeEntityMap.get(parentNodeId);
 
         const nodeState = NodeState.new(this.id, parentNodeEntity.nodeState.id, Id.newNodeId(nodeId, parentNodeEntity.nodeState.id), NodeStateStatus.new(expanded), nodeData)
@@ -118,6 +119,9 @@ export class TreeStateAggregate {
         parentNodeEntity.nodeState.children.push(nodeState);
 
         this.#eventRecorder.recordEvent(NodeAppendedEvent.new(nodeState))
+       } catch (err) {
+
+      }
     }
 
     /**
